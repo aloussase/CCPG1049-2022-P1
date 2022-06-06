@@ -12,7 +12,7 @@
 int
 main(int argc, char **argv)
 {
-    /* int foo = bar(); */
+    printf("int foo = bar()\n");
 
     return 0;
 }
