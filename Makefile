@@ -1,8 +1,9 @@
 CC     := cc
 CFLAGS := -std=c99 -pedantic -Wall -Wextra -Wno-deprecated-declarations -Os
 
-SRC = proj01.c
-OBJ = ${SRC:.c=.o}
+NAME = proj01-x
+SRC  = proj01.c
+OBJ  = ${SRC:.c=.o}
 
 all: options c
 
@@ -15,6 +16,6 @@ options:
 	${CC} -c ${CFLAGS} ${<}
 
 c: ${OBJ}
-	${CC} -o ${@} ${OBJ}
+	${CC} -o ${NAME:-x=-c} ${OBJ}
 
 .PHONY: all options c
