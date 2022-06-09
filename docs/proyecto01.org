@@ -9,5 +9,28 @@ src_emacs-lisp[:results raw]{(concat "#+setupfile: " (expand-file-name "org/late
 \clearpage
 
 * Instrucciones
+Este proyecto consiste en implementar un programa en lenguaje ensamblador que
+simule el funcionamiento de una cabina telefónica.
 
-foo bar
+- El usuario puede ingresar monedas de diferentes denominaciones desde 5
+  centavos, y puede ingresar tantas monedas cómo desee.
+- El usuario ingresa el número al que desea llamar. (Validar)
+- El costo de la llamada por minuto será generado de manera aleatoria entre un
+  valor de 10 y 40 centavos de dólar.
+- Luego se deberá simular la llamada, y el usuario podrá colgar, o la llamada
+  puede terminar debido a que se le terminó el saldo.
+- La cabina deberá mostrar una alerta cuando el saldo sea menor a $ 0.05
+- La cabina dará vuelto en caso de ser necesario. Recuerde que la mínima
+  denominación son monedas de 5 centavos.
+
+** Entregables
+- Código en lenguaje ensamblador.
+- Sus códigos deben estar apropiadamente documentados. (En un sólo idioma)
+- Documento en PDF que contenga:
+- Consideraciones sobre el uso de su programa
+- Capturas de Pantalla de su programa funcionando
+- Referencias
+
+* Referencias
+
+- [[https://youtube.com/playlist?list=PLfe6IcA_dEWleHVhk522FCPc4aeeaFFMr][_Computer Architecture with MIPS_]]
