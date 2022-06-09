@@ -33,4 +33,4 @@ asm: mips
 main: ${OBJ}
 	${CC} -o $@ $^ $(LDFLAGS)
 
-.PHONY: all clean options c mips asm
+.PHONY: all clean mips asm
