@@ -1,0 +1,13 @@
+#+title:    Proyecto 01 - Organización de Computadores
+#+author:   Juan Antonio González Orbe, Alexander Goussas
+#+language: es
+#+date:     15 de Junio, 2022
+
+# setup
+src_emacs-lisp[:results raw]{(concat "#+setupfile: " (expand-file-name "org/latex/latex-apa.org" user-emacs-directory))}
+
+\clearpage
+
+* Instrucciones
+
+foo bar
