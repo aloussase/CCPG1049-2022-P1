@@ -1,10 +1,10 @@
 #include <assert.h>
-#include <readline/readline.h>
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <readline/readline.h>
 
 #define EQLFLT(x, y) (((x) - (y)) < 0.00001)
 
