@@ -54,12 +54,20 @@ main:
     syscall
 
     # TODO :: check num.lenght == 100
+    # $a0: buffer ||| $a1: lenght
     # STD{OUT/IN}: "Ingrese el número a llamar: "
+    # El número ingresado jamás se usa en el programa por lo que de preferencia
+    # el STDIN es simplemente un string.
+    # Se ha optado por una funcionalidad extra, que es verificiar que la
+    # longitud del número sea igual a 10
     la $a0, askNumStr
     li $v0, 4
     syscall
-    li $v0, 5
+    li $v0, 8
     syscall
+
+    # check longitud número
+    #bne $a1, 10, die
 
     # newline
     la $a0, newLine
