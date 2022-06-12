@@ -14,9 +14,9 @@ logExchangeStr:     .asciiz "Cambio: $ "
 CALL_MIN_COST_INT: .word 10
 CALL_MAX_COST_INT: .word 40
 
-balanceInt:      .word 0 # balance inicial en 0 (sin fondos)
-callCostInt:     .word 0
-callExchangeInt: .word 0
+balanceFloat:      .float 0.0 # balance inicial en 0 (sin fondos)
+callCostFloat:     .float 0.0
+callExchangeFloat: .float 0.0
 callDurationStr: .asciiz "hh:mm:ss"
 
 # otro
@@ -31,7 +31,7 @@ main:
     la $a0, askCoinStr
     li $v0, 4
     syscall
-    li $v0, 5
+    li $v0, 6
     syscall
     # ************************************************************ LOOP-MONEDAS
 
@@ -44,8 +44,8 @@ main:
     la $a0, logBalanceStr
     li $v0, 4
     syscall
-    lw $a0, balanceInt
-    li $v0, 1
+    lw $a0, balanceFloat
+    li $v0, 2
     syscall
 
     # newline
@@ -70,8 +70,8 @@ main:
     la $a0, logCallCostStr
     li $v0, 4
     syscall
-    lw $a0, callCostInt
-    li $v0, 1
+    lw $a0, callCostFloat
+    li $v0, 2
     syscall
 
     # newline
@@ -120,8 +120,8 @@ main:
     la $a0, logCallCostStr
     li $v0, 4
     syscall
-    lw $a0, callCostInt
-    li $v0, 1
+    lw $a0, callCostFloat
+    li $v0, 2
     syscall
 
     # newline
@@ -133,10 +133,15 @@ main:
     la $a0, logExchangeStr
     li $v0, 4
     syscall
-    lw $a0, callExchangeInt
-    li $v0, 1
+    lw $a0, callExchangeFloat
+    li $v0, 2
     syscall
 
+    # return
+    li $v0, 10
+    syscall
+
+die:
     # return
     li $v0, 10
     syscall
