@@ -2,7 +2,7 @@
 *.o
 
 # misc
-proj01-*
+main
 *.tex
 *.pdf
 .ccls-cache
