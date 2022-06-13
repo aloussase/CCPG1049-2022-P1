@@ -17,10 +17,16 @@ main()
     run=0; failed=0; succeeded=0
 
     for t in ./tests/* ; do
+        printf '\033[32mTEST:\033[m Running test %s\n' "$t"
+
         # Preprocess the file to resolve any @include s
         out="`mktemp`"
         preprocess "$t" "$out"
         result="`spim -file $out`"
+
+        if [ -n "$DEBUG" ]; then
+            echo "$result"
+        fi
 
         # Tests must output a line starting with the string
         # ERROR: for each failure.

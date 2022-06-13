@@ -54,6 +54,10 @@ is_valid_phone_number(char* number)
 
   while (*number)
     {
+      /*
+        !(A && B) == !A || !B
+        !(A >= B) == A < B
+       */
       if (!(*number >= '0' && *number <= '9'))
         return 0;
       number++;
