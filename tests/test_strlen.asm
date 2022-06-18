@@ -39,8 +39,7 @@ main:
 
         jr $ra
 
-        # REVIEW :: end main
-        li $v0, 10
+        li $v0, 17
         syscall
 
 EXIT_ERROR:
