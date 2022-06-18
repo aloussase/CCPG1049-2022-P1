@@ -41,19 +41,72 @@ parte final del documento para no ser intrusiva al lector.
 
 ( ... )
 
-El número telefónico solicitado por el programa no sirve algún propósito, por
-lo que se ha optado por agregar una funcionalidad extra, que es verificar que
-la cantidad de dígitos sea igual a ~10~.  El número indicado anteriormente es
-la cantidad de dígitos que contempla un número telefónico celular Ecuatoriano
+El número telefónico solicitado por el programa no sirve algún propósito, por lo
+que se ha optado por agregar una funcionalidad extra, que es verificar que la
+cantidad de dígitos sea igual a ~10~.  El número indicado anteriormente es la
+cantidad de dígitos que contempla un número telefónico celular Ecuatoriano
 válido, ésto es, sin extensión internacional (~+593~).
 
-TODO :: SPIM
-TODO :: MIPS macros (MARS)
+** Compilación y Ejecución del Programa
+*SPIM* es un simulador de *MIPS*, éste es capaz de correr código ensamblador
+dirigido a *MIPS*, así como *MIPS Assembler and Runtime Simulator (MARS)*.  La
+diferencia mas evidente entre estos dos simuladores es que *SPIM* permite correr
+comandos desde la consola, mientras *MARS* en sí es un *IDE (Integrated
+Development Environment)*.
+
+Para este proyecto se ha optado por emplear *SPIM* ya que facilita la
+automatización de comandos a través de la consola, por ejemplo, es fácil
+integrar *SPIM* con algún /target/ de ~Makefile~.
+
+Mediante ~Makefile~ podemos crear /targets/ dirigidos a *SPIM* que nos permite
+simplemente correr:
+
+#+begin_src sh
+make mips
+#+end_src
+
+Y como resultado ver la ejecución del programa en la misma terminal.
+
+A partir de lo anterior, es importante mencionar que el código escrito está
+diseñado para poder ser ejecutado en *SPIM* y *MARS* intercambiablemente.
+Se ha evitado el empleo de instrucciones o directivas específicias de alguna
+plataforma para así fomentar la portabilidad.
+
+En *MARS* es posible definir /macros/ para así encapsular código y evitar
+repeticiones, similar al concepto de funciones, pero aquí la sustitución es
+textual, no existe algún tipo de transformación.
+
+A continuación un ejemplo de un macro para encapsular el conjunto de
+instrucciones para imprimir un número entero:
+
+#+begin_src asm
+	.macro print_int (%n)
+	li $v0, 1
+	add $a0, $zero, %n
+	syscall
+	.end_macro
+
+	print_int (10) # ==> 10
+#+end_src
+
+Desafortunadamente, los /macros/ son una característica exclusiva de *MARS*, por
+lo que incluirla en el proyecto violaría el principio de portabilidad propuesto
+por los autores del proyecto.  En otras palabras, los /macros/ realmente no son
+parte del languaje *MIPS*, éstos son una extensión al lenguaje.
+
+Hasta el momento de éste escrito, se contempla que la persona designada a
+revisar y calificar este proyecto empleará *MARS*, por lo que, técnicamente, es
+posible usar estos mencionados /macros/. Sin embargo, para evitar complicaciones
+se ha decidido no emplear dicha característica.
+
+\clearpage
 
 * Código fuente
 
 ** Versión =.asm=
 #+include: ../main.asm src asm -n
+
+\clearpage
 
 ** Versión =.c=
 #+include: ../main.c src c -n
@@ -62,3 +115,5 @@ TODO :: MIPS macros (MARS)
 
 * Referencias
 - [[https://youtube.com/playlist?list=PLfe6IcA_dEWleHVhk522FCPc4aeeaFFMr][_Computer Architecture with MIPS_]]
+- [[http://spimsimulator.sourceforge.net/][_SPIM: A MIPS32 Simulator - SourceForge_]]
+- [[http://courses.missouristate.edu/kenvollmar/mars/][_MARS (MIPS Assembler and Runtime Simulator)_]]
