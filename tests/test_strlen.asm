@@ -39,9 +39,7 @@ main:
 
         jr $ra
 
-        # REVIEW :: end main
-        li $v0, 10
-        syscall
+        # TODO :: end main
 
 EXIT_ERROR:
         li $v0, 4 # Print the error message
