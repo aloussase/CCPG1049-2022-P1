@@ -40,7 +40,9 @@ main:
 
         jr $ra
 
-        # TODO :: end main
+        # REVIEW :: end main
+        li $v0, 10
+        syscall
 
 EXIT_ERROR:
         li $v0, 4
