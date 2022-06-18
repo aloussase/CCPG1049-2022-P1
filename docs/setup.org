@@ -1,0 +1,13 @@
+# APA style LaTeX <https://apastyle.apa.org/style-grammar-guidelines>
+
+# Org
+#+options: toc: 2
+
+# LaTeX
+#+latex_class_options: [12pt, letter]
+#+latex_header:        \usepackage[doublespacing]{setspace}
+#+latex_header:        \usepackage[portrait, margin=1in]{geometry}
+# ** font
+# check for 'Times' variants
+#+latex_header: \usepackage{fontspec}
+#+latex_header: \setmainfont{Times Newer Roman}

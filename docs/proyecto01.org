@@ -1,10 +1,10 @@
 #+title:    Proyecto 01 - Organización de Computadores
 #+author:   Juan Antonio González Orbe, Alexander Goussas
 #+language: es
-#+date:     15 de Junio, 2022
+#+date:     3 de Julio, 2022
+#+export_file_name: ../projecto01.pdf
 
-# setup
-src_emacs-lisp[:results raw]{(concat "#+setupfile: " (expand-file-name "org/latex/latex-apa.org" user-emacs-directory))}
+#+setupfile: ./setup.org
 
 \clearpage
 
@@ -19,7 +19,7 @@ simule el funcionamiento de una cabina telefónica.
   valor de 10 y 40 centavos de dólar.
 - Luego se deberá simular la llamada, y el usuario podrá colgar, o la llamada
   puede terminar debido a que se le terminó el saldo.
-- La cabina deberá mostrar una alerta cuando el saldo sea menor a $ 0.05
+- La cabina deberá mostrar una alerta cuando el saldo sea menor a ~$0.05~
 - La cabina dará vuelto en caso de ser necesario. Recuerde que la mínima
   denominación son monedas de 5 centavos.
 
@@ -27,10 +27,38 @@ simule el funcionamiento de una cabina telefónica.
 - Código en lenguaje ensamblador.
 - Sus códigos deben estar apropiadamente documentados. (En un sólo idioma)
 - Documento en PDF que contenga:
-- Consideraciones sobre el uso de su programa
-- Capturas de Pantalla de su programa funcionando
-- Referencias
+  - Consideraciones sobre el uso de su programa
+  - Capturas de Pantalla de su programa funcionando
+  - Referencias
+
+- *EXTRAS*:
+  - Implementación del programa en C
+
+* Implementación
+Este documento incluye el código fuente de las dos versiones implementadas del
+programa (=.c= y =.asm=).  Esta sección, "[[*Código fuente][Código fuente"]] va incluida por la
+parte final del documento para no ser intrusiva al lector.
+
+( ... )
+
+El número telefónico solicitado por el programa no sirve algún propósito, por
+lo que se ha optado por agregar una funcionalidad extra, que es verificar que
+la cantidad de dígitos sea igual a ~10~.  El número indicado anteriormente es
+la cantidad de dígitos que contempla un número telefónico celular Ecuatoriano
+válido, ésto es, sin extensión internacional (~+593~).
+
+TODO :: SPIM
+TODO :: MIPS macros (MARS)
+
+* Código fuente
+
+** Versión =.asm=
+#+include: ../main.asm src asm -n
+
+** Versión =.c=
+#+include: ../main.c src c -n
+
+\clearpage
 
 * Referencias
-
 - [[https://youtube.com/playlist?list=PLfe6IcA_dEWleHVhk522FCPc4aeeaFFMr][_Computer Architecture with MIPS_]]
