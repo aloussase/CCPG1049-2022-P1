@@ -101,7 +101,7 @@ simulate_call()
       printf("%d. Llamada en curso ... Presiona C para colgar\n", minutes);
 
       int c = getchar();
-      if (c == 'C')
+      if (c == 'c' || c == 'C')
         break;
     }
 
