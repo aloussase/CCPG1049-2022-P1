@@ -37,8 +37,7 @@ main:
         lw   $ra, 0($sp)
         addi $sp, $sp, 4
 
-        jr $ra
-
+        li $a0, 0
         li $v0, 17
         syscall
 
