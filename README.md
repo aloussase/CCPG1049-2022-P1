@@ -1,24 +1,19 @@
-# Proyecto #1 Organización de Computadores
+# Proyecto 1 Organización de Computadores
 
-TODO :: descripción proyecto
-
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
-
-- [Proyecto #1 Organización de Computadores](#proyecto-1-organización-de-computadores)
-    - [Integrantes](#integrantes)
-    - [Entregables](#entregables)
-
-<!-- markdown-toc end -->
+Revisar documento **PDF** adjunto (documentación oficial del proyecto).
 
 ## Integrantes
 
-- Juan Antonio González (`anntnzrb`)
-- Alexander Goussas (`aloussase`)
+| Nombre                | Usuario (GH) | E-Mail (ESPOL)          |
+|:----------------------|:-------------|:------------------------|
+| Juan Antonio González | `anntnzrb`   | `juangonz@espol.edu.ec` |
+| Alexander Goussas     | `aloussase`  | `agoussas@espol.edu.ec` |
 
 ## Entregables
 
 Implementación del programa:
 
-- Archivo `.mips`
-- (*EXTRA*) Archivo `.c`
+| Lenguaje           | Archivo    | Compilador |
+|:-------------------|:-----------|:-----------|
+| Ensamblador (MIPS) | `main.asm` | SPIM       |
+| C                  | `main.c`   | GCC        |
