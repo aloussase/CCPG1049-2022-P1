@@ -24,7 +24,7 @@ options:
 	@printf "make clean --- Elimina objetos y otra basura\n"
 
 clean:
-	rm -f main *.o
+	rm -f main *.o main.final.asm
 
 # -----------------------------------------------------------------------------
 # MIPS (ASM) Compilation
@@ -33,7 +33,7 @@ clean:
 main.final.asm: main.asm
 	$(RM) $@
 	./scripts/preprocess.sh $< $@
-	${MIPS} $@
+	$(MIPS) $@
 
 asm: main.final.asm
 

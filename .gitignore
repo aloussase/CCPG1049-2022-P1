@@ -3,6 +3,7 @@
 
 # misc
 main
+main.final.asm
 *.tex
 *.pdf
 .ccls-cache

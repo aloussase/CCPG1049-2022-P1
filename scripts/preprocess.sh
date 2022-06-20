@@ -49,5 +49,5 @@ preprocess()
 }
 
 # Run as a script when given exactly 2 arguments.
-[ $# -eq 2 ] && preprocess "$1" "$2"
+[ $# -eq 2 ] && preprocess "$1" "$2" && exit 0
 [ $# -gt 2 ] && usage
