@@ -45,6 +45,10 @@ main()
     done
 
     printf 'Run %d tests, succeeded: %d, failed: %d\n' "$run" "$succeeded" "$failed"
+
+    [ "$failed" -ne  0 ] && exit 1
 }
 
 main
+
+exit 0
