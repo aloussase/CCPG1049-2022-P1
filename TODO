@@ -1,5 +1,5 @@
-[ ] ask_for_phone_number
-[ ] simulate_call
-[ ] run
-[ ] is_valid_coin
-[ ] ask_for_balance
+- [x] ask_for_phone_number
+- [ ] simulate_call
+- [ ] run
+- [ ] is_valid_coin
+- [ ] ask_for_balance

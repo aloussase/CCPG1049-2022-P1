@@ -9,7 +9,7 @@ MIPS := spim -file
 SRC  = main.c
 OBJ  = ${SRC:.c=.o}
 
-all: options c
+all: options
 
 options:
 	@printf "=> Opciones de compilador C:\n"
@@ -30,10 +30,12 @@ clean:
 # MIPS (ASM) Compilation
 # -----------------------------------------------------------------------------
 
-mips: main.asm
-	${MIPS} ${^}
+main.final.asm: main.asm
+	$(RM) $@
+	./scripts/preprocess.sh $< $@
+	${MIPS} $@
 
-asm: mips
+asm: main.final.asm
 
 # -----------------------------------------------------------------------------
 # C Compilation

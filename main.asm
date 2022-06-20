@@ -1,158 +1,62 @@
-    .data
-# STDIN
-askCoinStr: .asciiz "Ingrese moneda: "
-askNumStr: .asciiz  "Ingrese el número a llamar: "
-askCallInitStr: .asciiz "¿Iniciar llamada? "
+        .data
 
-logBalanceStr: .asciiz "Saldo: $ "
-logCallCostStr: .asciiz "Costo de llamada: $ "
-logOngoingCallStr: .asciiz "Llamada en curso . . . Presiona 'C' para colgar"
-logCallDurationStr: .asciiz "Duración de la llamada: "
-logExchangeStr: .asciiz "Cambio: $ "
-
-        # Costo mínimo y máximo de la llamada en enteros
-CALL_MIN_COST_INT: .word 10
-CALL_MAX_COST_INT: .word 40
-
-balanceFloat:        .float      0.0                 # balance inicial en 0 (sin fondos)
-callCostFloat:      .float       0.0
-callExchangeFloat:  .float       0.0
-callDurationStr:    .asciiz      "hh:mm:ss"
-
-        # otro
-newLine:.asciiz     "\n"
-dnewLine: .asciiz   "\n\n"
-tmp:    .word       0
+ask_for_phone_number_prompt:    .asciiz "Ingrese el numero a llamar: "
+ask_for_phone_number_errmsg:    .asciiz "\033[31mERROR:\033[m Numero invalido\n"
+ask_for_phone_number_buffer:    .byte 11
 
         .text
+        .globl main
 
+@include src/strlen.asm
+@include src/readline.asm
+@include src/is_valid_phone_number.asm
 
+ask_for_phone_number:
+        add $sp, $sp, -12
+        sw  $ra, 0($sp)
+        sw  $s0, 4($sp)
+        sw  $s1, 8($sp)
+
+        la  $s0, ask_for_phone_number_prompt
+        la  $s1, ask_for_phone_number_buffer
+
+        move  $a0, $s0
+        move  $a1, $s1
+        li    $a2, 11
+        jal readline
+
+ask_for_phone_number_loop:
+        move $a0, $s1
+        jal  is_valid_phone_number                      # Check whether the input is a valid phone number.
+
+        bne  $v0, $zero, ask_for_phone_number_exit      # Exit if the number is valid.
+
+        la $a0, ask_for_phone_number_errmsg             # Print an error message.
+        li $v0, 4
+        syscall
+
+        move  $a0, $s0                                  # Ask for input again.
+        move  $a1, $s1
+        li    $a2, 11
+        jal readline
+
+        j    ask_for_phone_number_loop                  # Loop.
+
+ask_for_phone_number_exit:
+        lw  $ra, 0($sp)
+        lw  $s0, 4($sp)
+        lw  $s1, 8($sp)
+        add $sp, $sp, 12
+
+        jr $ra
 
 main:
-    # ************************************************************ LOOP-MONEDAS
-    # STD{OUT/IN}: "Ingrese moneda: "
-        la          $a0, askCoinStr
-        li          $v0, 4
-        syscall
-        li          $v0, 6
-        syscall
-    # ************************************************************ LOOP-MONEDAS
+        add $sp, $sp, -4
+        sw  $ra, 0($sp)
 
-    # newline
-        la          $a0, newLine
-        li          $v0, 4
-        syscall
+        jal ask_for_phone_number
 
-    # STDOUT: "Saldo: $x.yz"
-        la          $a0, logBalanceStr
-        li          $v0, 4
-        syscall
-        lw          $a0, balanceFloat
-        li          $v0, 2
-        syscall
+        lw  $ra, 0($sp)
+        add $sp, $sp, 4
 
-    # newline
-        la          $a0, newLine
-        li          $v0, 4
-        syscall
-
-    # TODO :: check num.lenght == 100
-    # $a0: buffer ||| $a1: lenght
-    # STD{OUT/IN}: "Ingrese el número a llamar: "
-    # El número ingresado jamás se usa en el programa por lo que de preferencia
-    # el STDIN es simplemente un string.
-    # Se ha optado por una funcionalidad extra, que es verificiar que la
-    # longitud del número sea igual a 10
-        la          $a0, askNumStr
-        li          $v0, 4
-        syscall
-        li          $v0, 8
-        syscall
-
-    # check longitud número
-    #bne $a1, 10, die
-
-    # newline
-        la          $a0, newLine
-        li          $v0, 4
-        syscall
-
-    # STDOUT: "Costo de la llamada: $x.yz"
-        la          $a0, logCallCostStr
-        li          $v0, 4
-        syscall
-        lw          $a0, callCostFloat
-        li          $v0, 2
-        syscall
-
-    # newline
-        la          $a0, dnewLine
-        li          $v0, 4
-        syscall
-
-    # STD{OUT/IN}: "¿Iniciar llamada? "
-        la          $a0, askCallInitStr
-        li          $v0, 4
-        syscall
-        li          $v0, 8
-        syscall
-
-    # newline
-        la          $a0, newLine
-        li          $v0, 4
-        syscall
-
-    # ************************************************************ LOOP-LLAMADA
-    # STDOUT: "Llamada en curso . . . Presiona 'C' para colgar"
-        la          $a0, logOngoingCallStr
-        li          $v0, 4
-        syscall
-    # ************************************************************ LOOP-LLAMADA
-
-    # newline
-        la          $a0, dnewLine
-        li          $v0, 4
-        syscall
-
-    # STDOUT: "Duración de la llamada: hh:mm:ss"
-        la          $a0, logCallDurationStr
-        li          $v0, 4
-        syscall
-        la          $a0, callDurationStr# REVIEW :: str? int?
-        li          $v0, 4
-        syscall
-
-    # newline
-        la          $a0, dnewLine
-        li          $v0, 4
-        syscall
-
-    # STDOUT: "Costo de la llamada: $x.yz"
-        la          $a0, logCallCostStr
-        li          $v0, 4
-        syscall
-        lw          $a0, callCostFloat
-        li          $v0, 2
-        syscall
-
-    # newline
-        la          $a0, dnewLine
-        li          $v0, 4
-        syscall
-
-    # STDOUT: "Cambio: $ x.yz"
-        la          $a0, logExchangeStr
-        li          $v0, 4
-        syscall
-        lw          $a0, callExchangeFloat
-        li          $v0, 2
-        syscall
-
-    # return
-        li          $v0, 10
-        syscall
-
-die:
-    # return
-        li          $v0, 10
-        syscall
+        jr $ra
