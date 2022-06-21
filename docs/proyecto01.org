@@ -35,17 +35,31 @@ simule el funcionamiento de una cabina telefónica.
   - Implementación del programa en C
 
 * Implementación
-Este documento incluye el código fuente de las dos versiones implementadas del
-programa (=.c= y =.asm=).  Esta sección, "[[*Código fuente][Código fuente"]] va incluida por la
-parte final del documento para no ser intrusiva al lector.
+Este documento adjunta el código fuente de las dos versiones implementadas del
+programa (=.c= y =.asm=), sin embargo, única y exclusivamente será documentada
+la versión solicitada, que es la versión en *MIPS*.  En la sección
+"[[*Código fuente][Código fuente"]] estará incluido el contenido adjunto, por la parte final del
+documento, esto para no ser intrusivo al lector.
 
-( ... )
+TODO :: extras
 
 El número telefónico solicitado por el programa no sirve algún propósito, por lo
 que se ha optado por agregar una funcionalidad extra, que es verificar que la
 cantidad de dígitos sea igual a ~10~.  El número indicado anteriormente es la
 cantidad de dígitos que contempla un número telefónico celular Ecuatoriano
-válido, ésto es, sin extensión internacional (~+593~).
+válido, ésto es, sin extensión internacional (~+593~) y con los *2* primeros
+dígitos iguales a =09=.
+
+** Funciones
+Las funciones del proyecto se encuentran de forma individual, cada una en un
+archivo independiente.  Éstas pueden ser encontradas en la carpeta =src/=.
+
+#+begin_src shell :exports results :results output
+ls -l ../src | awk 'NR!=1 {print $9}'
+#+end_src
+
+Por cada archivo (función) se encontrará una pequeña documentación de la
+función y que registros emplea.
 
 ** Compilación y Ejecución del Programa
 *SPIM* es un simulador de *MIPS*, éste es capaz de correr código ensamblador
@@ -80,13 +94,13 @@ A continuación un ejemplo de un macro para encapsular el conjunto de
 instrucciones para imprimir un número entero:
 
 #+begin_src asm
-	.macro print_int (%n)
-	li $v0, 1
-	add $a0, $zero, %n
-	syscall
-	.end_macro
+.macro print_int (%n)
+li $v0, 1
+add $a0, $zero, %n
+syscall
+.end_macro
 
-	print_int (10) # ==> 10
+print_int (10) # ==> 10
 #+end_src
 
 Desafortunadamente, los /macros/ son una característica exclusiva de *MARS*, por
@@ -98,6 +112,35 @@ Hasta el momento de éste escrito, se contempla que la persona designada a
 revisar y calificar este proyecto empleará *MARS*, por lo que, técnicamente, es
 posible usar estos mencionados /macros/. Sin embargo, para evitar complicaciones
 se ha decidido no emplear dicha característica.
+
+\clearpage
+
+** Archivo ~make.in~ y Desarrollo del Proyecto
+Este archivo contiene el /pseudo-código/ del programa en lenguaje *MIPS*, que
+posteriormente será transformado a su version final (implementación real del
+programa) con nombre de archivo =main.asm=.
+
+La decisión de trabajar de esta manera permite incluir directivas creadas por
+los autores como =@include <archivo.asm>= sin tener que tener todo declarado en
+el mismo archivo.  A partir de esto, cada función creada para el programa se
+encuentra independientemente en la carpeta =src/=, como se menciona en la
+sección [[*Funciones][Funciones]].
+
+Sea el ejemplo, en =src/= se puede encontrar los siguientes archivos:
+- =strlen.asm=
+- =check_number_valid.asm=
+
+Mediante esta estructurada, se permite separar el programa solicitado con las
+funciones que éste require, esto implica que si hay un error en la función
+=strlen=, no es necesario nadar buscando en alguna parte del archivo, sino ir a
+su respectivo archivo directamente.
+
+La transformación de /pseudo-código/ a código válido en *MIPS* es posible
+gracias a un simple y pequeño script ubicado en la carpeta =scripts/= escrito
+en ~POSIX Shell~, éste busca y reemplaza las directivas creadas para así
+generar el archivo *MIPS* real.  Este proceso es único y exclusivo para los
+desarrolladores del proyecto, el archivo final es llamado =main.asm= y es el
+entregable del proyecto en sí.
 
 \clearpage
 
