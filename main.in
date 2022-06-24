@@ -1,5 +1,8 @@
         .data
 
+cost_per_minute_prefix:         .asciiz "El valor por minuto de llamada es de "
+cost_per_minute_suffix:         .asciiz " ctvs\n"
+
 ask_for_phone_number_prompt:    .asciiz "Ingrese el numero a llamar: "
 ask_for_phone_number_errmsg:    .asciiz "\033[31mERROR:\033[m Numero invalido\n"
 
@@ -22,6 +25,8 @@ simulate_call_buffer:           .byte 3
 @include src/readline.asm
 @include src/is_valid_coin.asm
 @include src/is_valid_phone_number.asm
+@include src/pow.asm
+@include src/rand.asm
 
 ask_for_phone_number:
         add $sp, $sp, -12
@@ -115,17 +120,30 @@ main:
         # ask for balance
         # print the balance
 
-        # NOTE: in spim there is no system call for random
+        # Get a random number.
+        li  $a0, 1
+        jal rand
 
-        # get a random number (price_per_minute)
-        # li $a0, 69
-        # li $a1, 40
-        # li $v0, 42
-        # syscall
+        # Normalize the result to be 0 <= x <= 40.
+        #
+        # The seed is fixed so we always get the same random value on
+        # every execution of the program. We need a source of entropy.
+        li   $t0, 40
+        div  $v0, $t0
+        mfhi $s0
+
+        la   $a0, cost_per_minute_prefix
+        li   $v0, 4
+        syscall
 
         # print the random number
-        # li $v0, 1
-        # syscall
+        move $a0, $s0
+        li   $v0, 1
+        syscall
+
+        la   $a0, cost_per_minute_suffix
+        li   $v0, 4
+        syscall
 
         jal ask_for_phone_number
         jal simulate_call
