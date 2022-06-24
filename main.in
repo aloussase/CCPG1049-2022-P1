@@ -2,7 +2,12 @@
 
 ask_for_phone_number_prompt:    .asciiz "Ingrese el numero a llamar: "
 ask_for_phone_number_errmsg:    .asciiz "\033[31mERROR:\033[m Numero invalido\n"
-ask_for_phone_number_buffer:    .byte 11
+
+simulate_call_prompt:           .asciiz "Iniciar la llamada?[S/n] "
+simulate_call_message:          .asciiz ". Llamada en curso ... Presiona C para colgar\n"
+
+ask_for_phone_number_buffer:    .byte 12
+simulate_call_buffer:           .byte 3
 
         .text
         .globl main
@@ -22,7 +27,7 @@ ask_for_phone_number:
 
         move  $a0, $s0
         move  $a1, $s1
-        li    $a2, 11
+        li    $a2, 12
         jal readline
 
 ask_for_phone_number_loop:
@@ -37,7 +42,7 @@ ask_for_phone_number_loop:
 
         move  $a0, $s0                                  # Ask for input again.
         move  $a1, $s1
-        li    $a2, 11
+        li    $a2, 12
         jal readline
 
         j    ask_for_phone_number_loop                  # Loop.
@@ -47,14 +52,72 @@ ask_for_phone_number_exit:
         lw  $s0, 4($sp)
         lw  $s1, 8($sp)
         add $sp, $sp, 12
+        jr  $ra
 
-        jr $ra
+
+simulate_call:
+        addi $sp, $sp, -16
+        sw   $ra, 0($sp)
+        sw   $s0, 4($sp)
+        sw   $s1, 8($sp)
+        sw   $s2, 12($sp)
+
+        li $s0, 0                                       # duration of the call in minutes.
+        la $s1, simulate_call_buffer                    # store user answer.
+        la $s2, simulate_call_message
+
+        la   $a0, simulate_call_prompt                  # ask the user if they want to start the call.
+        move $a1, $s1
+        li   $a2, 3
+        jal  readline
+
+        lb  $t0, 0($s1)                                 # exit is user entered 'S'.
+        bne $t0, 83, simulate_call_exit                 # 83 is ascii code for 'S'.
+
+simulate_call_loop:
+        addi $s0, $s0, 1                                # increase the number of minutes.
+
+        li   $v0, 1                                     # print call in progress message
+        move $a0, $s0
+        syscall
+
+        li   $v0, 4
+        move $a0, $s2
+        syscall
+
+        li $v0, 12                                      # read a character
+        syscall
+
+        li  $t0, 67
+        beq $v0, $t0, simulate_call_exit                # exit if the user enters C
+        j simulate_call_loop
+
+simulate_call_exit:
+        move $v0, $s0                                   # return call duration in minutes.
+        lw   $ra, 0($sp)
+        lw   $s0, 4($sp)
+        lw   $s1, 8($sp)
+        lw   $s2, 12($sp)
+        addi $sp, $sp, 16
+        jr   $ra
 
 main:
         add $sp, $sp, -4
         sw  $ra, 0($sp)
 
+        # ask for balance
+        # print the balance
+
+        # get a random number (price_per_minute)
+        # print the random number
+
         jal ask_for_phone_number
+        jal simulate_call
+
+        # calculate and print the final cost of the phone call
+        # float final_price = (price_per_minute / 100.0) * minutes;
+
+        # print the change
 
         lw  $ra, 0($sp)
         add $sp, $sp, 4

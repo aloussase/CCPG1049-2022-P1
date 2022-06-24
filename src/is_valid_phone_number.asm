@@ -15,14 +15,15 @@ is_valid_phone_number:
         move $a0, $s0                                # Restore $a0
 
         li   $v0, 0
-        li   $t0, 10
-        bne  $t0, $t1, is_valid_phone_number_exit   # Return 0 if len($a0) != 10
+        li   $t0, 11
+        bne  $t0, $t1, is_valid_phone_number_exit   # Return 0 if len($a0) != 11
 
 is_valid_phone_number_loop:
         lb   $t0, 0($a0)                            # $t0 = *$a0;
 
         li   $v0, 1
         beqz $t0, is_valid_phone_number_exit        # Return true if we reach the end of the string
+        beq  $t0, 10, is_valid_phone_number_exit    # Or is it's a newline
 
         li   $v0, 0                                 # Prepare false return value in case any of the following are true
 
