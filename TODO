@@ -1,8 +1,8 @@
 - [x] ask_for_phone_number
 - [x] simulate_call
-- [ ] run
+- [x] run
 - [x] is_valid_coin
-- [ ] ask_for_balance
+- [x] ask_for_balance
 
 # DOCS
 - [ ] Identity / Repo URL

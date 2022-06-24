@@ -9,11 +9,23 @@ ask_for_phone_number_errmsg:    .asciiz "\033[31mERROR:\033[m Numero invalido\n"
 simulate_call_prompt:           .asciiz "Iniciar la llamada?[S/n] "
 simulate_call_message:          .asciiz ". Llamada en curso ... Presiona C para colgar\n"
 
+ask_for_balance_prompt:         .asciiz "Ingrese monedas (-1 para terminar): "
+ask_for_balance_errmsg:         .asciiz "Moneda incorrecta\n"
+
+balance_report_message:         .asciiz "Su saldo es: "
+call_duration_message:          .asciiz "Duracion de la llamada (minutos): "
+
+total_call_cost_message:        .asciiz "Costo total de la llamada: "
+
+change_message:                 .asciiz "Cambio: "
+
 nickel:                         .float  0.05
 dime:                           .float  0.10
 quarter:                        .float  0.25
 half:                           .float  0.50
 tolerance:                      .float  0.000001
+
+minus_one:                      .float  -1.0
 
 ask_for_phone_number_buffer:    .byte 12
 simulate_call_buffer:           .byte 3
@@ -27,6 +39,45 @@ simulate_call_buffer:           .byte 3
 @include src/is_valid_phone_number.asm
 @include src/pow.asm
 @include src/rand.asm
+
+
+ask_for_balance:
+        addi $sp, $sp, -4
+        sw   $ra, 0($sp)
+
+        l.s  $f15, minus_one                # load -1.0 into $f15 to check exit condition
+        li.s $f16, 0.0                      # initialize return value to zero
+        li.s $f0,  0.0                      # reset $f0
+
+ask_for_balance_loop:
+        add.s $f16, $f16, $f0               # add to the balance
+
+        la   $a0, ask_for_balance_prompt    # print prompt
+        li   $v0, 4
+        syscall
+
+        li   $v0, 6                         # read a float, result in $f0
+        syscall
+
+        c.eq.s $f0, $f15                    # exit if user entered -1
+        bc1t   ask_for_balance_exit
+
+        jal  is_valid_coin                  # check if input is a valid coin denomination
+                                            # (argument is already in $f0)
+        bnez $v0, ask_for_balance_loop      # loop back if it is
+
+        la  $a0, ask_for_balance_errmsg     # else print error message
+        li  $v0, 4
+        syscall
+
+        sub.s $f16, $f16, $f0               # subtract invalid coin because it will be added at the top of the loop
+        j     ask_for_balance_loop          # and loop
+
+ask_for_balance_exit:
+        mov.s $f0, $f16                     # move return value to $f0
+        lw    $ra, 0($sp)
+        addi  $sp, $sp, 4
+        jr    $ra
 
 ask_for_phone_number:
         add $sp, $sp, -12
@@ -65,7 +116,6 @@ ask_for_phone_number_exit:
         lw  $s1, 8($sp)
         add $sp, $sp, 12
         jr  $ra
-
 
 simulate_call:
         addi $sp, $sp, -16
@@ -117,18 +167,37 @@ main:
         add $sp, $sp, -4
         sw  $ra, 0($sp)
 
-        # ask for balance
-        # print the balance
+        #
+        # Ask the user for balance and print it.
+        #
 
-        # Get a random number.
-        li  $a0, 1
-        jal rand
+        jal     ask_for_balance
+        la      $a0, balance_report_message
 
-        # Normalize the result to be 0 <= x <= 40.
+        mov.s   $f20, $f0                   # Save the balance in $f20.
+
+        li      $v0, 4
+        syscall
+
+        mov.s   $f12, $f0
+        li      $v0,  2
+        syscall
+
+        li      $a0,  10                    # Print a newline.
+        li      $v0,  11
+        syscall
+
+        #
+        # Get a random number to be the per minute cost of the phone call.
         #
         # The seed is fixed so we always get the same random value on
         # every execution of the program. We need a source of entropy.
-        li   $t0, 40
+        #
+
+        li  $a0, 1
+        jal rand
+
+        li   $t0, 40                        # Normalize the result to be 0 <= x <= 40.
         div  $v0, $t0
         mfhi $s0
 
@@ -136,8 +205,7 @@ main:
         li   $v0, 4
         syscall
 
-        # print the random number
-        move $a0, $s0
+        move $a0, $s0                       # Print the random number.
         li   $v0, 1
         syscall
 
@@ -145,13 +213,77 @@ main:
         li   $v0, 4
         syscall
 
-        jal ask_for_phone_number
-        jal simulate_call
+        #
+        # Ask for phone number and simulate call.
+        #
 
-        # calculate and print the final cost of the phone call
-        # float final_price = (price_per_minute / 100.0) * minutes;
+        jal   ask_for_phone_number      # Ask for a phone number.
+        jal   simulate_call             # Simulate call, number of minutes is in $v0.
+        move $t0, $v0                   # Save return value in $t0.
 
-        # print the change
+        la   $a0, call_duration_message
+        li   $v0, 4
+        syscall
+
+        move $a0, $t0                   # Print number of minutes.
+        li   $v0, 1
+        syscall
+
+        li   $a0, 10                    # Print a newline.
+        li   $v0, 11
+        syscall
+
+        #
+        # Calculate and print the final cost of the phone call.
+        #
+
+        li.s     $f1, 100.0
+
+        addi     $sp, $sp, -8          # Needed for converting ints to floats.
+        sw       $s0, 0($sp)
+        sw       $t0, 4($sp)
+
+        lwc1     $f0, 0($sp)           # Price per minute.
+        cvt.s.w  $f2, $f0
+
+        lwc1     $f0, 4($sp)           # Call duration.
+        cvt.s.w  $f3, $f0
+
+        addi     $sp, $sp, 8           # Pop 2 items off the stack.
+
+        div.s    $f12, $f2,  $f1       # f12 = price_per_minute / 100
+        mul.s    $f12, $f12, $f3       # f12 = f12 * call_duration
+
+        la       $a0, total_call_cost_message
+        li       $v0, 4
+        syscall
+
+        li       $v0, 2                # Print the total cost of the call.
+        syscall
+
+        li       $a0, 10               # Print a newline.
+        li       $v0, 11
+        syscall
+
+        #
+        # Calculate and print the change.
+        #
+
+        la    $a0, change_message
+        li    $v0, 4
+        syscall
+
+        sub.s $f12, $f20, $f12
+        li    $v0,  2
+        syscall
+
+        li    $a0, 10
+        li    $v0, 11
+        syscall
+
+        #
+        # End
+        #
 
         lw  $ra, 0($sp)
         add $sp, $sp, 4
