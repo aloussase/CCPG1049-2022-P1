@@ -6,6 +6,12 @@ ask_for_phone_number_errmsg:    .asciiz "\033[31mERROR:\033[m Numero invalido\n"
 simulate_call_prompt:           .asciiz "Iniciar la llamada?[S/n] "
 simulate_call_message:          .asciiz ". Llamada en curso ... Presiona C para colgar\n"
 
+nickel:                         .float  0.05
+dime:                           .float  0.10
+quarter:                        .float  0.25
+half:                           .float  0.50
+tolerance:                      .float  0.000001
+
 ask_for_phone_number_buffer:    .byte 12
 simulate_call_buffer:           .byte 3
 
@@ -14,6 +20,7 @@ simulate_call_buffer:           .byte 3
 
 @include src/strlen.asm
 @include src/readline.asm
+@include src/is_valid_coin.asm
 @include src/is_valid_phone_number.asm
 
 ask_for_phone_number:
@@ -108,8 +115,17 @@ main:
         # ask for balance
         # print the balance
 
+        # NOTE: in spim there is no system call for random
+
         # get a random number (price_per_minute)
+        # li $a0, 69
+        # li $a1, 40
+        # li $v0, 42
+        # syscall
+
         # print the random number
+        # li $v0, 1
+        # syscall
 
         jal ask_for_phone_number
         jal simulate_call

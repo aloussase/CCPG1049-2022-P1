@@ -5,12 +5,13 @@
 # Output:
 #   $v0: 1 if $a0 is a valid coin, 0 otherwise
 is_valid_coin:
-        li.s $f1, 0.05
-        li.s $f2, 0.1
-        li.s $f3, 0.25
-        li.s $f4, 0.5
+        # NOTE: These need to be defined in the including file.
+        l.s $f1, nickel
+        l.s $f2, dime
+        l.s $f3, quarter
+        l.s $f4, half
 
-        li.s $f9, 0.000001              # accepted error margin
+        l.s $f9, tolerance              # accepted error margin
 
         # Here I am using a different register for each branch to
         # avoid having to reset the same register over and over

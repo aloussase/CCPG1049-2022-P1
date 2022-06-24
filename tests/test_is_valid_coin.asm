@@ -4,6 +4,12 @@ five_cents_is_valid:        .asciiz "\033[31mERROR:\033[m test 0.05 is a valid c
 quarter_is_valid:           .asciiz "\033[31mERROR:\033[m test 0.25 is a valid coin failed"
 twelve_cents_is_not_valid:  .asciiz "\033[31mERROR:\033[m test 0.12 is not a valid coin failed"
 
+nickel:                     .float  0.05
+dime:                       .float  0.10
+quarter:                    .float  0.25
+half:                       .float  0.50
+tolerance:                  .float  0.000001
+
     .text
     .globl main
 
