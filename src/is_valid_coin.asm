@@ -17,18 +17,22 @@ is_valid_coin:
         # again.
 
         sub.s  $f5, $f1, $f0            # if ((0.05 - arg) < 0.000001)
+        abs.s  $f5, $f5
         c.lt.s $f5, $f9                 #
         bc1t   is_valid_coin_success    #   return true;
 
         sub.s  $f6, $f2, $f0            # if ((0.1 - arg) < 0.000001)
+        abs.s  $f6, $f6
         c.lt.s $f6, $f9                 #
         bc1t   is_valid_coin_success    #   return true;
 
         sub.s  $f7, $f3, $f0            # if ((0.25 - arg) < 0.000001)
+        abs.s  $f7, $f7
         c.lt.s $f7, $f9                 #
         bc1t   is_valid_coin_success    #   return true;
 
         sub.s  $f8, $f4, $f0            # if ((0.5 - arg) < 0.000001)
+        abs.s  $f8, $f8
         c.lt.s $f8, $f9                 #
         bc1t   is_valid_coin_success    #   return true;
 
