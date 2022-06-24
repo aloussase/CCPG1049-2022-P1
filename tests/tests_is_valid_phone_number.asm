@@ -1,7 +1,7 @@
         .data
-valid_phone_number:   .asciiz "0995764993"
-invalid_phone_number: .asciiz "12345678910"
-string_not_a_number:  .asciiz "Hello, World!"
+valid_phone_number:   .asciiz "0995764993\n"
+invalid_phone_number: .asciiz "12345678910\n"
+string_not_a_number:  .asciiz "Hello, World!\n"
 
 valid_phone_number_error:   .asciiz "\033[31mERROR:\033[m valid_phone_number returned false"
 invalid_phone_number_error: .asciiz "\033[31mERROR:\033[m invalid_phone_number returned true"
