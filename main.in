@@ -151,7 +151,9 @@ simulate_call_loop:
         syscall
 
         li  $t0, 67
-        beq $v0, $t0, simulate_call_exit                # exit if the user enters C
+        li  $t1, 99
+        beq $v0, $t0, simulate_call_exit                # exit if the user enters either 'c' or 'C'
+        beq $v0, $t1, simulate_call_exit
         j simulate_call_loop
 
 simulate_call_exit:
