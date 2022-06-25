@@ -3,6 +3,8 @@
 - [x] run
 - [x] is_valid_coin
 - [x] ask_for_balance
+- [ ] float precision formatting
+- [ ] validate balance for negative values on call loop
 
 # DOCS
 - [ ] Identity / Repo URL
