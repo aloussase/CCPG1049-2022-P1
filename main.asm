@@ -26,6 +26,8 @@ half:                           .float  0.50
 tolerance:                      .float  0.000001
 
 minus_one:                      .float  -1.0
+zerof:                          .float  0.0
+hundredf:                       .float  100.0
 
 ask_for_phone_number_buffer:    .byte 12
 simulate_call_buffer:           .byte 3
@@ -224,9 +226,9 @@ ask_for_balance:
         addi $sp, $sp, -4
         sw   $ra, 0($sp)
 
-        l.s  $f15, minus_one                # load -1.0 into $f15 to check exit condition
-        li.s $f16, 0.0                      # initialize return value to zero
-        li.s $f0,  0.0                      # reset $f0
+        l.s $f15, minus_one                # load -1.0 into $f15 to check exit condition
+        l.s $f16, zerof                   # initialize return value to zero
+        l.s $f0,  zerof                   # reset $f0
 
 ask_for_balance_loop:
         add.s $f16, $f16, $f0               # add to the balance
@@ -418,7 +420,7 @@ main:
         # Calculate and print the final cost of the phone call.
         #
 
-        li.s     $f1, 100.0
+        l.s      $f1, hundredf
 
         addi     $sp, $sp, -8          # Needed for converting ints to floats.
         sw       $s0, 0($sp)
