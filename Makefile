@@ -9,6 +9,8 @@ MIPS := spim -file
 SRC  = main.c
 OBJ  = ${SRC:.c=.o}
 
+RM := rm -Rf
+
 all: options
 
 options:
@@ -24,16 +26,16 @@ options:
 	@printf "make clean --- Elimina objetos y otra basura\n"
 
 clean:
-	rm -f main *.o main.asm
+	${RM} main *.o main.asm
 
 # -----------------------------------------------------------------------------
 # MIPS (ASM) Compilation
 # -----------------------------------------------------------------------------
 
 main.asm: main.in
-	$(RM) $@
-	./scripts/preprocess.sh $< $@
-	$(MIPS) $@
+	${RM} ${@}
+	./scripts/preprocess.sh ${<} ${@}
+	${MIPS} ${@}
 
 asm: main.asm
 
@@ -45,8 +47,8 @@ asm: main.asm
 	${CC} -c ${CFLAGS} ${<}
 
 main: ${OBJ}
-	${CC} -o $@ $^ $(LDFLAGS)
+	${CC} -o $@ ${^} ${LDFLAGS}
 
 c: main
 
-.PHONY: all clean mips asm
+.PHONY: all options clean main mips asm
