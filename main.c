@@ -88,7 +88,7 @@ int
 simulate_call()
 {
   int minutes = 0;
-  char* ans = readline("Iniciar la llamada? ");
+  char* ans = readline("Iniciar la llamada? [Si/No] ");
 
   if (strcmp(ans, "Si") != 0)
     return minutes;

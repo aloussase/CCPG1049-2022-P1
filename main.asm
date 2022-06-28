@@ -1,12 +1,12 @@
         .data
 
-cost_per_minute_prefix:         .asciiz "El valor por minuto de llamada es de "
+cost_per_minute_prefix:         .asciiz "El valor por minuto de llamada es de: "
 cost_per_minute_suffix:         .asciiz " ctvs\n"
 
 ask_for_phone_number_prompt:    .asciiz "Ingrese el numero a llamar: "
 ask_for_phone_number_errmsg:    .asciiz "\033[31mERROR:\033[m Numero invalido\n"
 
-simulate_call_prompt:           .asciiz "Iniciar la llamada?[S/n] "
+simulate_call_prompt:           .asciiz "Iniciar la llamada? [S/n] "
 simulate_call_message:          .asciiz ". Llamada en curso ... Presiona C para colgar\n"
 
 ask_for_balance_prompt:         .asciiz "Ingrese monedas (-1 para terminar): "
