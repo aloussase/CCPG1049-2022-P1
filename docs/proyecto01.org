@@ -2,7 +2,7 @@
 #+author:   Juan Antonio González Orbe, Alexander Goussas
 #+language: es
 #+date:     3 de Julio, 2022
-#+export_file_name: ../projecto01.pdf
+#+export_file_name: ../proyecto01.pdf
 
 #+setupfile: ./setup.org
 
@@ -34,14 +34,26 @@ simule el funcionamiento de una cabina telefónica.
 - *EXTRAS*:
   - Implementación del programa en C
 
+* Autores y Extras
+Éste proyecto es realizado por:
+
+| Nombre                       | Usuario GH  | E-Mail (ESPOL)          |
+|------------------------------+-------------+-------------------------|
+| /Juan Antonio González Orbe/ | =anntnzrb=  | =juangonz@espol.edu.ec= |
+| /Alexander Goussas/          | =aloussase= | =agoussas@espol.edu.ec= |
+
+El código fuente puede ser encontrado en *GitHub*, en el siguiente repositorio:
+
+_<[[https://github.com/aloussase/CCPG1049-2022-P1][https://github.com/aloussase/CCPG1049-2022-P1]]>_
+
 * Implementación
 Este documento adjunta el código fuente de las dos versiones implementadas del
 programa (=.c= y =.asm=), sin embargo, única y exclusivamente será documentada
 la versión solicitada, que es la versión en *MIPS*.  En la sección
-"[[*Código fuente][Código fuente"]] estará incluido el contenido adjunto, por la parte final del
+"[[*Código fuente][Código fuente]]" estará incluido el contenido adjunto, por la parte final del
 documento, esto para no ser intrusivo al lector.
-
-TODO :: extras
+El código fuente se encuentra /bien documentado/ por lo que leer e interpretar
+el programa debe fácil.
 
 El número telefónico solicitado por el programa no sirve algún propósito, por lo
 que se ha optado por agregar una funcionalidad extra, que es verificar que la
@@ -49,6 +61,10 @@ cantidad de dígitos sea igual a ~10~.  El número indicado anteriormente es la
 cantidad de dígitos que contempla un número telefónico celular Ecuatoriano
 válido, ésto es, sin extensión internacional (~+593~) y con los *2* primeros
 dígitos iguales a =09=.
+
+A continuación se encuentra una explicación de funciones empleadas, creación y
+ejecución del
+programa.
 
 ** Funciones
 Las funciones del proyecto se encuentran de forma individual, cada una en un
@@ -59,7 +75,7 @@ ls -l ../src | awk 'NR!=1 {print $9}'
 #+end_src
 
 Por cada archivo (función) se encontrará una pequeña documentación de la
-función y que registros emplea.
+función y que registros empleados.
 
 ** Compilación y Ejecución del Programa
 *SPIM* es un simulador de *MIPS*, éste es capaz de correr código ensamblador
@@ -76,7 +92,7 @@ Mediante ~Makefile~ podemos crear /targets/ dirigidos a *SPIM* que nos permite
 simplemente correr:
 
 #+begin_src sh
-make mips
+make asm
 #+end_src
 
 Y como resultado ver la ejecución del programa en la misma terminal.
@@ -141,6 +157,34 @@ en ~POSIX Shell~, éste busca y reemplaza las directivas creadas para así
 generar el archivo *MIPS* real.  Este proceso es único y exclusivo para los
 desarrolladores del proyecto, el archivo final es llamado =main.asm= y es el
 entregable del proyecto en sí.
+
+\clearpage
+
+#+attr_latex: :width 14cm
+#+caption: Ejemplo de ejecución del programa en ASM (MIPS) #1
+[[./assets/prog-run-asm-1.png]]
+
+#+attr_latex: :width 14cm
+#+caption: Ejemplo de ejecución del programa en C #1
+[[./assets/prog-run-c-1.png]]
+
+\clearpage
+
+** Tests y GitHub Workflows
+En el repositorio de GitHub se puede encontrar un *workflow* que permite correr
+una serie de tests pertinentes a la carptes =tests/=.  Éstos fueron creados
+para depurar posibles errores en las implementaciones individuales de las
+funciones (esto gracias al hecho de haberlas separado por archivo
+independientes); la creación de los mismos facilitó el desarrollo de las
+funciones ya que el chequeo era aislado del programa.
+
+Los tests se corren cada vez que algun contribuidor ejerce un /push/ al
+repositorio remoto.  La siguiente imágen adjunta muestra una serie de tests
+exitosos:
+
+#+attr_latex: :width 12cm
+#+caption: GitHub Workflows
+[[./assets/workflows.png]]
 
 \clearpage
 

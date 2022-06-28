@@ -7,5 +7,5 @@
 - [ ] validate balance for negative values on call loop
 
 # DOCS
-- [ ] Identity / Repo URL
-- [ ] GH Workflow / Tests
+- [x] Identity / Repo URL
+- [x] GH Workflow / Tests
