@@ -188,7 +188,8 @@ exitosos:
 ** Video demonstrativo
 
 Se proporciona un video demonstrativo (demo) de la ejecucción del programa en
-~MIPS~ y en ~C~ en el [[https://youtu.be/klbhOYNj_18][siguiente link]].
+~MIPS~ y en ~C~ en el siguiente link:
+<[[https://youtu.be/klbhOYNj_18][https://youtu.be/klbhOYNj_18]]>
 
 \clearpage
 
