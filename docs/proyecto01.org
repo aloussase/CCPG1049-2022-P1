@@ -63,8 +63,7 @@ válido, ésto es, sin extensión internacional (~+593~) y con los *2* primeros
 dígitos iguales a =09=.
 
 A continuación se encuentra una explicación de funciones empleadas, creación y
-ejecución del
-programa.
+ejecución del programa.
 
 ** Funciones
 Las funciones del proyecto se encuentran de forma individual, cada una en un
@@ -75,7 +74,7 @@ ls -l ../src | awk 'NR!=1 {print $9}'
 #+end_src
 
 Por cada archivo (función) se encontrará una pequeña documentación de la
-función y que registros empleados.
+función y que registros se han empleado.
 
 ** Compilación y Ejecución del Programa
 *SPIM* es un simulador de *MIPS*, éste es capaz de correr código ensamblador
@@ -185,6 +184,11 @@ exitosos:
 #+attr_latex: :width 12cm
 #+caption: GitHub Workflows
 [[./assets/workflows.png]]
+
+** Video demonstrativo
+
+Se proporciona un video demonstrativo (demo) de la ejecucción del programa en
+~MIPS~ y en ~C~ en el [[https://youtu.be/klbhOYNj_18][siguiente link]].
 
 \clearpage
 
