@@ -10,6 +10,15 @@ En OSX, esto puede hacerse con [brew](https://formulae.brew.sh/formula/spim#defa
 $ brew install spim
 ```
 
+Luego se puede ejecutar el archivo `main.asm` de la siguiente manera:
+```
+$ spim -f main.asm
+```
+O con make:
+```
+$ make asm
+```
+
 ## Integrantes
 
 | Nombre                | Usuario (GH) | E-Mail (ESPOL)          |
